@@ -5,6 +5,7 @@ import re
 from typing import TYPE_CHECKING, Literal
 
 import pandas as pd
+from langchain.agents import AgentExecutor
 from langchain_core.tools import BaseTool, ToolException
 from langchain_core.tools.structured import StructuredTool
 from loguru import logger
@@ -178,7 +179,11 @@ class ComponentToolkit:
     ) -> list[BaseTool]:
         tools = []
         for output in self.component.outputs:
-            if output.name == TOOL_OUTPUT_NAME or any(tool_type in output.types for tool_type in TOOL_TYPES_SET):
+            if (
+                output.name == TOOL_OUTPUT_NAME
+                or any(tool_type in output.types for tool_type in TOOL_TYPES_SET)
+                or output.method == "build_agent"
+            ):
                 continue
 
             if not output.method:
