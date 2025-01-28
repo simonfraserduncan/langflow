@@ -99,6 +99,7 @@ class DatabaseService(Service):
             kwargs = {
                 "pool_size": self.settings_service.settings.pool_size,
                 "max_overflow": self.settings_service.settings.max_overflow,
+                "pool_pre_ping": True,
             }
             scheme = "postgresql+psycopg" if url_components[0].startswith("postgresql") else url_components[0]
         database_url = f"{scheme}://{url_components[1]}"
